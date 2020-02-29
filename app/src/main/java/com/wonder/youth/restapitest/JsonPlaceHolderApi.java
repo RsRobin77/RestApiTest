@@ -1,7 +1,5 @@
 package com.wonder.youth.restapitest;
 
-import android.content.Intent;
-
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +10,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -32,7 +32,7 @@ public interface JsonPlaceHolderApi {
     Call<List<Post>> getPosts(@QueryMap Map<String, String> parameters);
 
     @GET("posts/{id}/comments")
-    Call<List<Comment>> getComments(@Path("id")int postId);
+    Call<List<Comment>> getComments(@Path("id") int postId);
 
 
     @GET
@@ -46,7 +46,7 @@ public interface JsonPlaceHolderApi {
     @POST("posts")
     Call<Post> createPost(
             @Field("UserId") int userId,
-            @Field("title")  String title,
+            @Field("title") String title,
             @Field("body") String text
 
     );
@@ -57,13 +57,16 @@ public interface JsonPlaceHolderApi {
             @FieldMap Map<String, String> fields
     );
 
+    @Headers({"Static-Header1: 123","Static-Header2: 123"})
     @PUT("posts/{id}")
-    Call<Post> putPost(@Path("id")int id, @Body Post post);
+    Call<Post> putPost(@Header ("Dynamic_Header") String header,
+                       @Path("id") int id,
+                       @Body Post post);
 
-  @PATCH("posts/{id}")
-    Call<Post> patchPost(@Path("id")int id, @Body Post post);
+    @PATCH("posts/{id}")
+    Call<Post> patchPost(@Path("id") int id, @Body Post post);
 
-  @DELETE("posts/{id}")
+    @DELETE("posts/{id}")
     Call<Void> deletPost(@Path("id") int id);
 
 }
